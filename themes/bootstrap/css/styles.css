@@ -1,0 +1,134 @@
+body {
+	background-color: #f6f6f6;
+}
+.clear {
+	clear: both;
+}
+#page {
+	width: 940px;
+}
+.row {
+	margin-bottom: 50px;
+}
+.span3 {
+	float: left;
+	width: 105px;
+}
+.span9 {
+	width: 800px;
+}
+.table {
+	margin-bottom: 0;
+}
+
+
+/* хедер */
+
+#header {
+	margin-bottom: 50px;
+	border-bottom: 2px solid #555;
+}
+#header ul {
+	float: right;
+	margin-top: 25px;
+	list-style-type: none;
+}
+#header ul li {
+	display: inline-block;
+	margin-left: 30px;
+	text-align: right;
+	font-size: 18px;
+}
+#header .phone {
+	font-size: 24px;
+}
+#header ul li a {
+	display: block;
+	margin-top: 15px;
+	font-size: 14px;
+}
+#slogan {
+	font-size: 18px;
+	font-weight: normal;
+}
+
+/* сайдбар */
+
+#sidebar .nav-list {
+	padding: 0;
+}
+.icon-paperclip {
+	background: url('../img/paperclip.png') no-repeat;
+}
+.icon-phone-alt {
+	background: url('../img/phone_alt.png') no-repeat;
+}
+
+/* контент */
+
+.wrap {
+	margin-bottom: 30px;
+	background: #fff;
+}
+.wrap .col {
+	float: left;
+}
+.wrap .block {
+	position: relative;
+	margin: 20px 0px 20px 32px;
+	padding: 10px;
+}
+#marks .block span {
+	position: absolute;
+	left: -15px;
+}
+#models .col {
+	width: 260px;
+}
+#models .block {
+	margin: 45px 0px 20px 20px;
+}
+#models .block span {
+	position: absolute;
+	left: 10px;
+	top: -15px;
+}
+#modifications .wrap {
+	padding-bottom: 10px;
+}
+#modifications .brick {
+	display: inline-block;
+	vertical-align: top;
+	width: 234px;
+	margin: 10px 0 0 10px;
+	padding: 10px;
+	background: #eee;
+}
+#modifications .brick strong {
+	display: block;
+}
+#products .table tbody td {
+	vertical-align: middle;
+}
+
+/* футер */
+
+#footer {
+	display: table-cell;
+	width: 940px;
+	height: 80px;
+	border-top: 2px solid #555;
+	vertical-align: middle;
+}
+#footer p {
+	display: inline-block;
+}
+#footer ul {
+	display: inline-block;
+	margin-left: 40px;
+	list-style-type: none; 
+}
+#footer ul li {
+	display: inline-block;
+	margin-right: 40px;
+}
