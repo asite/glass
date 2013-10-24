@@ -116,6 +116,9 @@ a {
 html.ie #sidebar .nav-header {
 	padding: 14px 16px 11px;
 }
+html.linux #sidebar .nav-header {
+	padding: 15px 16px 10px;
+}
 #sidebar a {
 	margin: 0;
 	padding: 11px 16px 12px;
@@ -131,6 +134,9 @@ html.ie #sidebar .nav-header {
 	background: linear-gradient(to bottom,  #f4f4f4 0%,#dedede 100%); /* W3C */
 }
 html.ie #sidebar a {
+	padding: 13px 16px 10px;
+}
+html.linux #sidevar a {
 	padding: 13px 16px 10px;
 }
 #qform {
@@ -199,6 +205,15 @@ html.ie #qform button {
 html.ie8 #qform button {
 	padding: 7px 8px;
 }
+html.linux #qform button {
+	padding: 11px 8px 3px;
+}
+html.linux.opera #qform button {
+	padding: 8px 8px 6px;
+}
+html.linux.gecko #qform button {
+	padding: 9px 8px 5px;
+}
 #news {
 	margin-top: 45px;
 }
@@ -210,6 +225,9 @@ html.ie8 #qform button {
 	font: 20px MyriadPro, Arial, sans-serif;
 	text-transform: uppercase;
 	color: #000;
+}
+html.linux.opera #news h2 {
+	padding: 15px 15px 11px;
 }
 #news div {
 	margin-bottom: 13px;
@@ -279,6 +297,15 @@ html.ie8 .nav-tabs > li > a {
 	padding: 10px 8px 9px;
 	font-size: 15px;
 }
+html.linux .nav-tabs > li > a {
+	padding: 11px 8px 5px;
+}
+html.linux.opera .nav-tabs > li > a {
+	padding: 11px 8px 7px;
+}
+html.linux.gecko .nav-tabs > li > a {
+	padding: 10px 8px 6px;
+}
 .nav > li > a:hover,
 .nav > li > a:focus {
 	background: #666;
@@ -344,6 +371,12 @@ html.ie .btn-group .btn {
 html.ie8 .btn-group .btn {
 	padding: 3px 12px 4px;
 }
+html.linux .btn-group .btn {
+	padding: 6px 12px 1px;
+}
+html.linux.gecko .btn-group .btn {
+	padding: 4px 12px 3px;
+}
 .btn-group.small {
 	margin-top: -2px;
 	margin-bottom: 20px;
@@ -380,6 +413,9 @@ html.ie8 .btn-group .btn {
 	left: -27px;
 	top: 4px;
 	font: 20px MyriadBoldPro, Arial, sans-serif;
+}
+html.linux .wrap table span {
+	top: 1px;
 }
 .wrap table a {
 	display: block;
@@ -495,6 +531,9 @@ html.ie #products button {
 html.ie8 #products button {
 	padding: 5px 9px;	
 }
+html.linux #products button {
+	padding: 6px 9px 2px;
+}
 #products button:hover {
 	background: #4cadbd;
 }
@@ -539,6 +578,9 @@ html.ie8 #products .cart.added {
 	text-decoration: none;
 	color: #2f7a86;
 }
+html.linux .modal .close {
+	margin: -8px -17px 0 0;
+}
 .modal h4 {
 	margin-top: 20px;
 	font: 15px MyriadBoldPro, Arial, sans-serif;
@@ -564,6 +606,12 @@ html.ie8 #products .cart.added {
 	background: -o-linear-gradient(top,  #ffffff 0%,#dcdcdc 100%);
 	background: -ms-linear-gradient(top,  #ffffff 0%,#dcdcdc 100%);
 	background: linear-gradient(to bottom,  #ffffff 0%,#dcdcdc 100%);
+}
+html.linux .modal .btn {
+	padding: 7px 12px 1px;
+}
+html.linux.gecko .modal .btn {
+	padding: 5px 12px 3px;
 }
 .modal .btn:hover {
 	color: #b3b3b3;
