@@ -8,6 +8,7 @@
  * @property string $name
  * @property string $secode
  * @property string $model_id
+ * @property integer $pop
  */
 class Modification extends CActiveRecord
 {
@@ -27,11 +28,13 @@ class Modification extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, secode, model_id', 'required'),
-			array('secode, model_id', 'length', 'max'=>10),
+			array('name, secode, model_id, pop', 'required'),
+			array('pop', 'numerical', 'integerOnly'=>true),
+			array('secode', 'length', 'max'=>32),
+			array('model_id', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, secode, model_id', 'safe', 'on'=>'search'),
+			array('id, name, secode, model_id, pop', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,6 +59,7 @@ class Modification extends CActiveRecord
 			'name' => 'Name',
 			'secode' => 'Secode',
 			'model_id' => 'Model',
+			'pop' => 'Pop',
 		);
 	}
 
@@ -81,6 +85,7 @@ class Modification extends CActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('secode',$this->secode,true);
 		$criteria->compare('model_id',$this->model_id,true);
+		$criteria->compare('pop',$this->pop);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -97,15 +102,36 @@ class Modification extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-	
+
+	/**
+	 * Получение модификаций марки и модели
+	 */
 	public function getModifications($mark, $model)
 	{
-		return Yii::app()->db->createCommand("SELECT modification.name
+		return Yii::app()->db->createCommand("SELECT modification.name, modification.pop
 			FROM mark, model, modification
 			WHERE mark.id=model.mark_id
 			AND model.id=modification.model_id
 			AND mark.name='$mark'
 			AND model.name='$model'
 			ORDER BY modification.name")->queryAll();
+	}
+
+	/**
+	 * Получение всех модификаций
+	 */
+	public function getModifList()
+	{
+		return Yii::app()->db->createCommand("SELECT
+			modification.id,
+			modification.name modifname,
+			modification.secode,
+			model.name modelname,
+			mark.name markname,
+			modification.pop
+			FROM mark, model, modification
+			WHERE mark.id=model.mark_id AND
+			model.id=modification.model_id
+			ORDER BY modification.id")->queryAll();
 	}
 }

@@ -2,49 +2,95 @@
 /* @var $this SiteController */
 
 $this->pageTitle=Yii::app()->name;
-$dataCount = sizeof($data);
-$blockCount = floor($dataCount/5);
-$block1Count = $blockCount+$dataCount%5;
+$colN = 1;
 $firstLetter = 'A';
-?>
 
-<p>Выберите марку из списка:</p>
+$content = '<p class="title small">Подбор автостекла по:</p>';
 
-<?
-echo '<div id="marks" class="wrap"><div class="col">', '<div class="block"><span>', $firstLetter, '</span>';
+$content .= $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'toggle' => 'radio',
+    'buttons' => array(
+        array('label' => 'Автомобилю', 'active' => true),
+        array('label' => 'Параметрам'),
+        array('label' => 'Производителю'),
+    ),
+    'htmlOptions' => array('class' => 'small'),
+), true);
+
+$content .= '<br><p class="title">Выберите марку из списка:</p><a id="show_marks" href="javascript: void(0);"></a>';
+
+$content .= $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'toggle' => 'radio',
+    'buttons' => array(
+        array('label' => 'Популярное', 'active' => true),
+        array('label' => 'Все'),
+    ),
+    'htmlOptions' => array('class' => 'marks'),
+), true);
+
+$content .= '<div id="marks" class="wrap"><table><tbody><tr><td><div><span>'.$firstLetter.'</span>';
 
 foreach ($data as $key => $value) {
 
-	if (!$key) { // первый раз
-		echo '<a href="javascript: void(0);">', $value['name'], '</a>';
-		continue;
+	if ($value['pop'] == '1') {
+		$pops = 'pop';
+	} else {
+		$pops = 'unpop';
 	}
 
-	if (($key == $block1Count) || ($key == $block1Count+$blockCount) || ($key == $block1Count+$blockCount*2) || ($key == $block1Count+$blockCount*3)) {
-		
-		echo '</div></div><div class="col"><div class="block">';
-		
-		if ($firstLetter != substr($value['name'], 0, 1)) {
-			$firstLetter = substr($value['name'], 0, 1);
-			echo '<span>', $firstLetter, '</span><a href="javascript: void(0);">', $value['name'], '</a>';
-			continue;
-		} else {
-			echo '<a href="javascript: void(0);">', $value['name'], '</a>';
-			continue;
-		}
+	if (!$key) { // первый раз
+		$content .= '<a href="javascript: void(0);" class="'.$pops.'">'.$value['name'].'</a>';
+		continue;
 	}
 
 	if ($firstLetter != substr($value['name'], 0, 1)) {
 		$firstLetter = substr($value['name'], 0, 1);
-		echo '</div><div class="block"><span>', $firstLetter, '</span><a href="javascript: void(0);">', $value['name'], '</a>';
-	} else {
-		echo '<br><a href="javascript: void(0);">', $value['name'], '</a>';
+		$colN++;
+
+		if ($colN == 5) {
+			$colN = 1;
+			$content .= '</div></td></tr><tr><td><div><span>'.$firstLetter.'</span><a href="javascript: void(0);" class="'.$pops.'">'.$value['name'].'</a>';
+			continue;
+		}
+
+		$content .= '</div></td><td><div><span>'.$firstLetter.'</span><a href="javascript: void(0);" class="'.$pops.'">'.$value['name'].'</a>';
+		continue;
 	}
+
+	$content .= '<a href="javascript: void(0);" class="'.$pops.'">'.$value['name'].'</a>';
 }
 	
-echo '</div></div><div class="clear"></div></div>';
-?>
+$content .= '</tbody></table></div>
+	<div id="models" data-url="'.Yii::app()->createUrl('mark/models').'"></div>
+	<div id="modifications" data-url="'.Yii::app()->createUrl('mark/modifications').'"></div>
+	<div id="products" data-url="'.Yii::app()->createUrl('mark/products').'"></div>';
 
-<div id="models" data-url="<?php echo Yii::app()->createUrl('mark/models'); ?>"></div>
-<div id="modifications" data-url="<?php echo Yii::app()->createUrl('mark/modifications'); ?>"></div>
-<div id="products" data-url="<?php echo Yii::app()->createUrl('mark/products'); ?>"></div>
+$this->widget('bootstrap.widgets.TbTabs', array(
+    'type'=>'tabs',
+    'tabs'=>array(
+        array('label'=>'Товары', 'content'=>$content, 'active'=>true),
+        array('label'=>'Услуги', 'content'=>'Пусто'),
+    ),
+));
+
+$this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'cartModal')); ?>
+ 
+<div class="modal-body">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h4>Товар успешно добавлен в корзину</h4>
+    <p>One fine body...</p>
+    <?php
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'label'=>'Оформить заказ',
+        'url'=>'#',
+        'htmlOptions'=>array('data-dismiss'=>'modal'),
+    ));
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'label'=>'Оформить позже',
+        'url'=>'#',
+        'htmlOptions'=>array('data-dismiss'=>'modal'),
+    ));
+    ?>
+</div>
+ 
+<?php $this->endWidget();

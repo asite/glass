@@ -113,7 +113,8 @@ class Product extends CActiveRecord
 			product.eurocode,
 			product.price,
 			product.brand,
-			product.features
+			product.features,
+			product.available
 			FROM mark, model, modification, product, secodes
 			WHERE mark.name='$mark'
 			AND model.name='$model'
@@ -121,6 +122,7 @@ class Product extends CActiveRecord
 			AND mark.id=model.mark_id
 			AND model.id=modification.model_id
 			AND modification.secode=secodes.name
-			AND product.code=secodes.name")->queryAll();
+			AND product.code=secodes.name
+			ORDER BY product.name")->queryAll();
 	}
 }

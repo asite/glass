@@ -94,6 +94,6 @@ class Mark extends CActiveRecord
 
 	public function getAllMarks()
 	{
-		return Yii::app()->db->createCommand("SELECT name FROM mark ORDER BY name")->queryAll();
+		return Yii::app()->db->createCommand("SELECT name, pop FROM mark ORDER BY name")->queryAll();
 	}
 }

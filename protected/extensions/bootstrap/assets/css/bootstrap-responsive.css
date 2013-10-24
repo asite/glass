@@ -8,15 +8,16 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
-.clearfix {
+/* .clearfix {
   *zoom: 1;
-}
+} */
 
 .clearfix:before,
 .clearfix:after {
   display: table;
   line-height: 0;
   content: "";
+  clear: both;
 }
 
 .clearfix:after {

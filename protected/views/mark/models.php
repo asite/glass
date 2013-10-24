@@ -1,40 +1,50 @@
 <?php
-$dataCount = sizeof($data);
-$blockCount = floor($dataCount/3);
-$block1Count = $blockCount+$dataCount%3;
+$colN = 1;
 $firstLetter = substr($data[0]['name'], 0, 1);
 
-$output = '<p>Выберите модель из списка:</p><div class="wrap" data-mark="'.$mark.'"><div class="col"><div class="block"><span>'.$firstLetter.'</span>';
+$output = '<p class="title">Выберите модель из списка:</p><a id="show_models" href="javascript: void(0);"></a>';
+
+$output .= $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'toggle' => 'radio',
+    'buttons' => array(
+        array('label' => 'Популярное', 'active' => true),
+        array('label' => 'Все'),
+    ),
+    'htmlOptions' => array('class' => 'models'),
+), true);
+
+$output .= '<div class="wrap" data-mark="'.$mark.'"><table><tbody><tr><td><div><span>'.$firstLetter.'</span>';
 
 foreach ($data as $key => $value) {
 
-	if (!$key) { // первый раз
-		$output .= '<a href="javascript: void(0);">'.$value['name'].'</a>';
-		continue;
+	if ($value['pop'] == '1') {
+		$pops = 'pop';
+	} else {
+		$pops = 'unpop';
 	}
 
-	if (($key == $block1Count) || ($key == $block1Count+$blockCount)) {
-		
-		$output .= '</div></div><div class="col"><div class="block">';
-		
-		if ($firstLetter != substr($value['name'], 0, 1)) {
-			$firstLetter = substr($value['name'], 0, 1);
-			$output .= '<span>'.$firstLetter.'</span><a href="javascript: void(0);">'.$value['name'].'</a>';
-			continue;
-		} else {
-			$output .= '<a href="javascript: void(0);">'.$value['name'].'</a>';
-			continue;
-		}
+	if (!$key) { // первый раз
+		$output .= '<a href="javascript: void(0);" class="'.$pops.'">'.$value['name'].'</a>';
+		continue;
 	}
 
 	if ($firstLetter != substr($value['name'], 0, 1)) {
 		$firstLetter = substr($value['name'], 0, 1);
-		$output .= '</div><div class="block"><span>'.$firstLetter.'</span><a href="javascript: void(0);">'.$value['name'].'</a>';
-	} else {
-		$output .= '<br><a href="javascript: void(0);">'.$value['name'].'</a>';
+		$colN++;
+
+		if ($colN == 5) {
+			$colN = 1;
+			$output .= '</div></td></tr><tr><td><div><span>'.$firstLetter.'</span><a href="javascript: void(0);" class="'.$pops.'">'.$value['name'].'</a>';
+			continue;
+		}
+
+		$output .= '</div></td><td><div><span>'.$firstLetter.'</span><a href="javascript: void(0);" class="'.$pops.'">'.$value['name'].'</a>';
+		continue;
 	}
+
+	$output .= '<a href="javascript: void(0);" class="'.$pops.'">'.$value['name'].'</a>';
 }
 	
-$output .= '</div></div><div class="clear"></div></div>';
+$output .= '<div></td></tr></tbody></table></div>';
 
 echo $output;

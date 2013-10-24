@@ -1,9 +1,26 @@
 <?php
-$output = '<p>Выберите модификацию из списка:</p><div class="wrap" data-mark="'.$mark.'" data-model="'.$model.'">';
+$output = '<p class="title">Выберите модификацию из списка:</p><a id="show_modifications" href="javascript: void(0);"></a>';
+
+$output .= $this->widget('bootstrap.widgets.TbButtonGroup', array(
+    'toggle' => 'radio',
+    'buttons' => array(
+        array('label' => 'Популярное', 'active' => true),
+        array('label' => 'Все'),
+    ),
+    'htmlOptions' => array('class' => 'modifications'),
+), true);
+
+$output .= '<div class="wrap" data-mark="'.$mark.'" data-model="'.$model.'">';
 
 foreach ($data as $key => $value) {
 
-	$output .= '<div class="brick"><strong>'.$model.'</strong><a class="modif" href="javascript: void(0);">'.$value['name'].'</a></div>';
+	if ($value['pop'] == '1') {
+		$pops = 'pop';
+	} else {
+		$pops = 'unpop';
+	}
+
+	$output .= '<a class="modif brick '.$pops.'" href="javascript: void(0);"><strong>'.$model.'</strong><em>'.$value['name'].'</em></a>';
 }
 	
 $output .= '<div class="clear"></div></div>';

@@ -5,7 +5,6 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Mark','url'=>array('index')),
 	array('label'=>'Create Mark','url'=>array('create')),
 );
 

@@ -98,6 +98,6 @@ class Models extends CActiveRecord
 		
 	public function getModels($mark)
 	{
-		return Yii::app()->db->createCommand("SELECT model.name FROM mark, model WHERE mark.id=model.mark_id AND mark.name='$mark' ORDER BY model.name")->queryAll();
+		return Yii::app()->db->createCommand("SELECT model.name, model.pop FROM mark, model WHERE mark.id=model.mark_id AND mark.name='$mark' ORDER BY model.name")->queryAll();
 	}
 }
