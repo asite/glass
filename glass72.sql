@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
+-- version 3.5.8.1deb1
 -- http://www.phpmyadmin.net
 --
--- Хост: 127.0.0.1
--- Время создания: Окт 24 2013 г., 10:00
--- Версия сервера: 5.5.25
--- Версия PHP: 5.3.13
+-- Host: localhost
+-- Generation Time: Nov 08, 2013 at 04:38 PM
+-- Server version: 5.5.34-0ubuntu0.13.04.1
+-- PHP Version: 5.4.9-4ubuntu2.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `glass72`
+-- Database: `glass72`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `mark`
+-- Table structure for table `mark`
 --
 
 CREATE TABLE IF NOT EXISTS `mark` (
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `mark` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=85 ;
 
 --
--- Дамп данных таблицы `mark`
+-- Dumping data for table `mark`
 --
 
 INSERT INTO `mark` (`id`, `name`, `pop`) VALUES
@@ -124,7 +124,7 @@ INSERT INTO `mark` (`id`, `name`, `pop`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `model`
+-- Table structure for table `model`
 --
 
 CREATE TABLE IF NOT EXISTS `model` (
@@ -134,10 +134,10 @@ CREATE TABLE IF NOT EXISTS `model` (
   `pop` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `mark_id` (`mark_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1282 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1283 ;
 
 --
--- Дамп данных таблицы `model`
+-- Dumping data for table `model`
 --
 
 INSERT INTO `model` (`id`, `name`, `mark_id`, `pop`) VALUES
@@ -806,7 +806,7 @@ INSERT INTO `model` (`id`, `name`, `mark_id`, `pop`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `modification`
+-- Table structure for table `modification`
 --
 
 CREATE TABLE IF NOT EXISTS `modification` (
@@ -819,10 +819,10 @@ CREATE TABLE IF NOT EXISTS `modification` (
   KEY `secode` (`secode`),
   KEY `model_id` (`model_id`),
   KEY `secode_2` (`secode`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1252 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1253 ;
 
 --
--- Дамп данных таблицы `modification`
+-- Dumping data for table `modification`
 --
 
 INSERT INTO `modification` (`id`, `name`, `secode`, `model_id`, `pop`) VALUES
@@ -2081,7 +2081,7 @@ INSERT INTO `modification` (`id`, `name`, `secode`, `model_id`, `pop`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `new`
+-- Table structure for table `new`
 --
 
 CREATE TABLE IF NOT EXISTS `new` (
@@ -2093,7 +2093,7 @@ CREATE TABLE IF NOT EXISTS `new` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Дамп данных таблицы `new`
+-- Dumping data for table `new`
 --
 
 INSERT INTO `new` (`id`, `date`, `preview`, `content`) VALUES
@@ -2105,7 +2105,44 @@ INSERT INTO `new` (`id`, `date`, `preview`, `content`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `product`
+-- Table structure for table `order`
+--
+
+CREATE TABLE IF NOT EXISTS `order` (
+  `id` int(15) unsigned NOT NULL,
+  `mounting` tinyint(1) DEFAULT NULL,
+  `clientname` varchar(256) NOT NULL,
+  `phone` varchar(32) NOT NULL,
+  `address` varchar(512) DEFAULT NULL,
+  `date` varchar(32) DEFAULT NULL,
+  `time` varchar(16) DEFAULT NULL,
+  `create_date` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_list`
+--
+
+CREATE TABLE IF NOT EXISTS `order_list` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `order_id` int(10) unsigned NOT NULL,
+  `product_id` int(10) unsigned NOT NULL,
+  `product_price` int(10) unsigned NOT NULL,
+  `modification_id` int(10) unsigned NOT NULL,
+  `mounting` float unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `product_id` (`product_id`),
+  KEY `modification_id` (`modification_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product`
 --
 
 CREATE TABLE IF NOT EXISTS `product` (
@@ -2123,7 +2160,7 @@ CREATE TABLE IF NOT EXISTS `product` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2591 ;
 
 --
--- Дамп данных таблицы `product`
+-- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`id`, `code`, `name`, `eurocode`, `prodcode`, `price`, `brand`, `features`, `available`) VALUES
@@ -4172,7 +4209,7 @@ INSERT INTO `product` (`id`, `code`, `name`, `eurocode`, `prodcode`, `price`, `b
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `qa`
+-- Table structure for table `qa`
 --
 
 CREATE TABLE IF NOT EXISTS `qa` (
@@ -4184,7 +4221,7 @@ CREATE TABLE IF NOT EXISTS `qa` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
--- Дамп данных таблицы `qa`
+-- Dumping data for table `qa`
 --
 
 INSERT INTO `qa` (`id`, `question`, `answer`, `username`) VALUES
@@ -4193,7 +4230,7 @@ INSERT INTO `qa` (`id`, `question`, `answer`, `username`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `secodes`
+-- Table structure for table `secodes`
 --
 
 CREATE TABLE IF NOT EXISTS `secodes` (
@@ -4202,7 +4239,7 @@ CREATE TABLE IF NOT EXISTS `secodes` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `secodes`
+-- Dumping data for table `secodes`
 --
 
 INSERT INTO `secodes` (`name`) VALUES
