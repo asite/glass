@@ -10,9 +10,6 @@
     <script src="//ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/script.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/cssfix.js"></script>
-    <!--[if (gte IE 6)&(lte IE 8)]>
-	  <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/selectivizr-min.js"></script>
-	<![endif]-->
 </head>
 
 <body>

@@ -280,8 +280,15 @@
             });
 
             $('.date label.radio label').on('click', function() {
+
                 $('[for="Order_date"] span').css('visibility', 'visible').text('Вы выбрали день: ' + $(this).text() + '\t ');
                 $('.time').show().find('input').removeAttr('checked');
+
+                // ie8 - не работает псевдоселектор :checked даже с selectivizr
+                if ($('html').is('.ie8')) {
+                    $('.date label.radio [type="radio"]').removeAttr('checked').next().css('background-color', '#fff');
+                    $(this).css('background-color', '#e9e9e9').prev().attr('checked', 'checked');
+                }
             });
 
             $('.time label.radio [type="radio"]').on('click', function() {

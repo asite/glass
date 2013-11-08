@@ -32,10 +32,10 @@ function getDates() {
 	);
 
 	for ($i = 0; $i < 7; $i++) { 
-		$dates[date('d.m.Y', time()+($i*24*60*60))] = date('j', time()+($i*24*60*60)).' '.$months[date('m', time()+($i*24*60*60))].'<br /> '.$days[date('N', time()+($i*24*60*60))];
+		$dates[date('d.m.Y', time()+($i*24*60*60))] = date('j', time()+($i*24*60*60)).' '.$months[date('m', time()+($i*24*60*60))].' <br />'.$days[date('N', time()+($i*24*60*60))];
 	}
 
-	$dates[date('d.m.Y', time())] = date('j', time()).' '.$months[date('m', time())].'<br /> Сегодня';
+	$dates[date('d.m.Y', time())] = date('j', time()).' '.$months[date('m', time())].' <br />Сегодня';
 
 	return $dates;
 }
