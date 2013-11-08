@@ -1,15 +1,11 @@
 <?php
-$this->breadcrumbs=array(
-	'Modifications'=>array('index'),
-	'Create',
-);
+$this->pageTitle = Yii::app().' - Создание модификации';
 
 $this->menu=array(
-	array('label'=>'List Modification','url'=>array('index')),
-	array('label'=>'Manage Modification','url'=>array('admin')),
+	array('label'=>'Управление записями','url'=>array('admin')),
 );
 ?>
 
-<h1>Create Modification</h1>
+<h1>Создание модификации</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

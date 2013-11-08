@@ -7,6 +7,7 @@
  * @property string $id
  * @property string $name
  * @property string $mark_id
+ * @property integer $pop
  */
 class Models extends CActiveRecord
 {
@@ -26,12 +27,13 @@ class Models extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, mark_id', 'required'),
+			array('name, mark_id, pop', 'required'),
+			array('pop', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>256),
 			array('mark_id', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, mark_id', 'safe', 'on'=>'search'),
+			array('id, name, mark_id, pop', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -43,6 +45,8 @@ class Models extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			//'modification' => array(self::HAS_MANY, 'Modification', 'model_id'),
+			'mark' => array(self::BELONGS_TO, 'Mark', 'mark_id'),
 		);
 	}
 
@@ -53,8 +57,9 @@ class Models extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
-			'mark_id' => 'Mark',
+			'name' => 'Наименование',
+			'mark_id' => 'Марка',
+			'pop' => 'Популярность',
 		);
 	}
 
@@ -78,7 +83,8 @@ class Models extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('mark_id',$this->mark_id,true);
+		$criteria->compare('mark_id', $this->mark_id, false);
+		$criteria->compare('pop',$this->pop);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -96,8 +102,11 @@ class Models extends CActiveRecord
 		return parent::model($className);
 	}
 		
+	/**
+	 * @param string $mark - наименование марки
+	 */
 	public function getModels($mark)
 	{
-		return Yii::app()->db->createCommand("SELECT model.name, model.pop FROM mark, model WHERE mark.id=model.mark_id AND mark.name='$mark' ORDER BY model.name")->queryAll();
+		return Yii::app()->db->createCommand("SELECT model.id, model.name, model.pop FROM mark, model WHERE mark.id=model.mark_id AND mark.name='$mark' ORDER BY model.name")->queryAll();
 	}
 }

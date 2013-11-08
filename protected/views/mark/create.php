@@ -1,15 +1,11 @@
 <?php
-$this->breadcrumbs=array(
-	'Marks'=>array('index'),
-	'Create',
-);
+$this->pageTitle = Yii::app()->name.' - Создание марки';
 
 $this->menu=array(
-	array('label'=>'List Mark','url'=>array('index')),
-	array('label'=>'Manage Mark','url'=>array('admin')),
+	array('label'=>'Управление записями','url'=>array('admin')),
 );
 ?>
 
-<h1>Create Mark</h1>
+<h1>Создать марку</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

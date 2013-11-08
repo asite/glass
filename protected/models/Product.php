@@ -10,6 +10,9 @@
  * @property string $eurocode
  * @property string $prodcode
  * @property double $price
+ * @property string $brand
+ * @property string $features
+ * @property integer $available
  */
 class Product extends CActiveRecord
 {
@@ -29,13 +32,14 @@ class Product extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('code, name, eurocode, prodcode, price', 'required'),
+			array('code, name, eurocode, prodcode, price, brand, features, available', 'required'),
+			array('available', 'numerical', 'integerOnly'=>true),
 			array('price', 'numerical'),
-			array('code', 'length', 'max'=>10),
-			array('name, eurocode, prodcode', 'length', 'max'=>128),
+			array('code', 'length', 'max'=>32),
+			array('name, eurocode, prodcode, brand', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, code, name, eurocode, prodcode, price', 'safe', 'on'=>'search'),
+			array('id, code, name, eurocode, prodcode, price, brand, features, available', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,11 +61,14 @@ class Product extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'code' => 'Code',
-			'name' => 'Name',
-			'eurocode' => 'Eurocode',
-			'prodcode' => 'Prodcode',
-			'price' => 'Price',
+			'code' => 'Secode',
+			'name' => 'Наименование',
+			'eurocode' => 'Еврокод',
+			'prodcode' => 'Код производителя',
+			'price' => 'Цена',
+			'brand' => 'Бренд',
+			'features' => 'Характеристики',
+			'available' => 'Доступность',
 		);
 	}
 
@@ -89,6 +96,9 @@ class Product extends CActiveRecord
 		$criteria->compare('eurocode',$this->eurocode,true);
 		$criteria->compare('prodcode',$this->prodcode,true);
 		$criteria->compare('price',$this->price);
+		$criteria->compare('brand',$this->brand,true);
+		$criteria->compare('features',$this->features,true);
+		$criteria->compare('available',$this->available);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -106,9 +116,13 @@ class Product extends CActiveRecord
 		return parent::model($className);
 	}
 
+	/**
+	 * Получение списка продукции определенной марки, модели и модификации
+	 */
 	public function getProducts($mark, $model, $modification)
 	{
 		return Yii::app()->db->createCommand("SELECT
+			product.id,
 			product.name,
 			product.eurocode,
 			product.price,
@@ -124,5 +138,14 @@ class Product extends CActiveRecord
 			AND modification.secode=secodes.name
 			AND product.code=secodes.name
 			ORDER BY product.name")->queryAll();
+	}
+
+	/**
+	 * Получение информации о продукте по идентификатору
+	 * @param integer $pid
+	 */
+	public function getProd($pid)
+	{
+		return Yii::app()->db->createCommand("SELECT name, brand, price FROM product WHERE id=$pid")->queryRow();
 	}
 }

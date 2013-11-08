@@ -1,0 +1,1 @@
+<?php echo CHtml::dropDownList('Modification[model_id]', '', CHtml::listData(Models::getModels($mark), 'id', 'name'));

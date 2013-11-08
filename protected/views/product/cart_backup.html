@@ -1,0 +1,84 @@
+<?php
+mb_internal_encoding("utf-8");
+function mb_ucfirst($text) {
+    return mb_strtoupper(mb_substr($text, 0, 1)) . mb_substr($text, 1);
+}
+
+var_dump($_SESSION);
+if (isset($_SESSION['orders'])) {
+	$orders = $_SESSION['orders'];
+}
+?>
+
+<h1>Ваш заказ: <a href="<?php echo Yii::app()->createUrl('product/clearcart'); ?>">очистить</a></h1>
+
+<?php if (isset($orders)): ?>
+
+	<table class="table">
+		<tfoot>
+			<tr>
+				<td></td>
+				<td></td>
+				<td class="total">Итого к оплате: <span></span> руб.</td>
+			</tr>
+		</tfoot>
+		<tbody>
+			<?php foreach($orders as $value): ?>
+				<?php $product = Product::getProd($value['pid']); ?>
+				<tr>
+					<td><?php echo mb_ucfirst($product['name']); ?>, <?php echo $value['mark'], ' ', $value['model'], ' ', $value['modification']; ?>, производитетель: <strong><?php echo strtoupper($product['brand']); ?></strong></td>
+					<td class="price">Стоимость стекла: <span><?php echo $product['price']; ?></span> руб.</td>
+					<td class="mounting_price">Стоимость установки: <span>3000</span> руб. <a href="javascript: void(0);" class="without">Купить без установки</a></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+
+<?php
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+	'id' => 'cart_form',
+	'enableAjaxValidation' => true,
+));
+
+echo $form->errorSummary($model);
+echo $form->textFieldRow($model, 'clientname', array('maxlength' => 256));
+echo $form->textFieldRow($model, 'phone', array('maxlength' => 32));
+echo $form->checkBoxRow($model, 'mounting');
+echo $form->textFieldRow($model, 'address', array('maxlength' => 512));
+echo $form->radioButtonListRow($model, 'date', array(
+	'31 октября Сегодня',
+	'1 ноября Пятница',
+	'2 ноября Суббота',
+	'3 ноября Воскресенье',
+	'4 ноября Понедельник',
+	'5 ноября Вторник',
+	'6 ноября Среда'
+));
+echo $form->radioButtonListRow($model, 'time', array(
+	'10:00',
+	'12:00',
+	'14:00',
+	'16:00',
+	'18:00',
+	'20:00',
+	'21:00'
+));
+echo $form->hiddenField($model, 'id');
+echo $form->hiddenField($model, 'product_id');
+echo $form->hiddenField($model, 'modification_id');
+
+$this->widget('bootstrap.widgets.TbButton', array(
+	'buttonType'=>'submit',
+	'type'=>'primary',
+	'label'=>'Оформить заказ',
+));
+
+$this->endWidget(); ?>
+
+<?php else: ?>
+	<p>Корзина пуста.</p>	
+<?php endif; ?>
+
+<script>
+	$('body').addClass('cart');
+</script>

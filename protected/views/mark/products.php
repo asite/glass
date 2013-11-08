@@ -19,13 +19,29 @@ $output .= $this->widget('bootstrap.widgets.TbButtonGroup', array(
     'htmlOptions' => array('class' => 'products'),
 ), true);
 
-$output .= '<table class="table"><caption>'.mb_ucfirst($name).':</caption><thead><tr><th>Производитель:</th><th>Характеристики:</th><th>Наличие:</th><th>Цена:</th><th>Заказать:</th></tr></thead><tbody>';
+$output .= '<table class="table first" data-url="'.Yii::app()->createUrl('product/cart').'">
+	<caption>'.mb_ucfirst($name).':</caption>
+	<thead><tr>
+	<th>Производитель:</th>
+	<th>Характеристики:</th>
+	<th>Наличие:</th>
+	<th>Цена:</th>
+	<th>Заказать:</th>
+	</tr></thead><tbody>';
 
 foreach ($data as $value) {
 
 	if ($name != $value['name']) {
 		$name = $value['name'];
-		$output .= '</tbody></table><table class="table"><caption>'.mb_ucfirst($name).':</caption><thead><tr><th>Производитель:</th><th>Характеристики:</th><th>Наличие:</th><th>Цена:</th><th>Заказать:</th></tr></thead><tbody>';
+		$output .= '</tbody></table><table class="table">
+			<caption>'.mb_ucfirst($name).':</caption>
+			<thead><tr>
+			<th>Производитель:</th>
+			<th>Характеристики:</th>
+			<th>Наличие:</th>
+			<th>Цена:</th>
+			<th>Заказать:</th>
+			</tr></thead><tbody>';
 	}
 
 	if ($value['available'] == '1') {
@@ -34,12 +50,12 @@ foreach ($data as $value) {
 		$available = '';
 	}
 
-	$output .= '<tr class="row'.$i++.'">
+	$output .= '<tr class="row'.$i++.'" data-pid="'.$value['id'].'">
 		<td class="first"><div><em class="cart"></em>'.$value['brand'].'</div></td>
 		<td>'.$value['features'].'</td>
 		<td class="'.$available.'"></td>
 		<td>'.$value['price'].' руб.</td>
-		<td><button data-toggle="modal" data-target="#cartModal">Заказать</button></td>
+		<td><button>Заказать</button></td>
 		</tr>';
 }
 

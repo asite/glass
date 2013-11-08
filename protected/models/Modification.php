@@ -12,6 +12,9 @@
  */
 class Modification extends CActiveRecord
 {
+	public $markname;
+	public $modelname;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -46,6 +49,7 @@ class Modification extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'model' => array(self::BELONGS_TO, 'Models', 'model_id'),
 		);
 	}
 
@@ -56,10 +60,10 @@ class Modification extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'name' => 'Наименование',
 			'secode' => 'Secode',
-			'model_id' => 'Model',
-			'pop' => 'Pop',
+			'model_id' => 'id Модели',
+			'pop' => 'Популярность',
 		);
 	}
 
@@ -75,18 +79,30 @@ class Modification extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($markId = '')
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
+
+		if ($markId != '') {
+			$criteria->with = array(
+			   	'model' => array(
+				   	'with' => array(
+				    	'mark' => array(
+				    		'condition' => "mark.id=$markId"
+				    	)
+			        )
+			    )
+			);
+		}
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('secode',$this->secode,true);
 		$criteria->compare('model_id',$this->model_id,true);
 		$criteria->compare('pop',$this->pop);
-
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -108,7 +124,10 @@ class Modification extends CActiveRecord
 	 */
 	public function getModifications($mark, $model)
 	{
-		return Yii::app()->db->createCommand("SELECT modification.name, modification.pop
+		return Yii::app()->db->createCommand("SELECT
+			modification.id,
+			modification.name,
+			modification.pop
 			FROM mark, model, modification
 			WHERE mark.id=model.mark_id
 			AND model.id=modification.model_id
@@ -130,8 +149,8 @@ class Modification extends CActiveRecord
 			mark.name markname,
 			modification.pop
 			FROM mark, model, modification
-			WHERE mark.id=model.mark_id AND
-			model.id=modification.model_id
+			WHERE mark.id=model.mark_id
+			AND model.id=modification.model_id
 			ORDER BY modification.id")->queryAll();
 	}
 }

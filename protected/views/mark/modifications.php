@@ -12,7 +12,7 @@ $output .= $this->widget('bootstrap.widgets.TbButtonGroup', array(
 
 $output .= '<div class="wrap" data-mark="'.$mark.'" data-model="'.$model.'">';
 
-foreach ($data as $key => $value) {
+foreach ($data as $value) {
 
 	if ($value['pop'] == '1') {
 		$pops = 'pop';
@@ -20,7 +20,7 @@ foreach ($data as $key => $value) {
 		$pops = 'unpop';
 	}
 
-	$output .= '<a class="modif brick '.$pops.'" href="javascript: void(0);"><strong>'.$model.'</strong><em>'.$value['name'].'</em></a>';
+	$output .= '<a class="modif brick '.$pops.'" href="javascript: void(0);" data-id="'.$value['id'].'"><strong>'.$model.'</strong><em>'.$value['name'].'</em></a>';
 }
 	
 $output .= '<div class="clear"></div></div>';

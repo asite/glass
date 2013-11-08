@@ -19,13 +19,13 @@
 
 	<?php echo $form->textAreaRow($model,'features',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-	<?php echo $form->textFieldRow($model,'available',array('class'=>'span5')); ?>
+	<?php echo $form->checkBoxRow($model,'available'); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
-			'label'=>'Search',
+			'label'=>'Искать',
 		)); ?>
 	</div>
 

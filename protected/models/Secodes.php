@@ -49,7 +49,7 @@ class Secodes extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'name' => 'Name',
+			'name' => 'Код',
 		);
 	}
 

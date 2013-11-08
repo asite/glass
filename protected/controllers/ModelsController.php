@@ -6,7 +6,9 @@ class ModelsController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout = '//layouts/column2';
+
+	public $defaultAction = 'admin';
 
 	/**
 	 * @return array action filters
@@ -45,17 +47,6 @@ class ModelsController extends Controller
 	}
 
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
-
-	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
@@ -70,7 +61,7 @@ class ModelsController extends Controller
 		{
 			$model->attributes=$_POST['Models'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -93,8 +84,7 @@ class ModelsController extends Controller
 		if(isset($_POST['Models']))
 		{
 			$model->attributes=$_POST['Models'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->save();
 		}
 
 		$this->render('update',array(
@@ -120,17 +110,6 @@ class ModelsController extends Controller
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
-
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Models');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
 	}
 
 	/**

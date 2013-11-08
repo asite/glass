@@ -1,6 +1,6 @@
 <?php
 
-class ProductController extends Controller
+class SecodesController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -8,7 +8,7 @@ class ProductController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
-	public $defaultAction = 'admin';
+    public $defaultAction = 'admin';
 
 	/**
 	 * @return array action filters
@@ -33,7 +33,7 @@ class ProductController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'update' , 'cart', 'clearcart', 'removeitem', 'addorder'),
+				'actions'=>array('create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -47,32 +47,20 @@ class ProductController extends Controller
 	}
 
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
-
-	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionCreate()
 	{
-		$model=new Product;
+		$model=new Secodes;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if (isset($_POST['Product'])) {
-			$model->attributes = $_POST['Product'];
-			if ($model->save()) {
-				$this->redirect(array('cart'));
-			}
+		if(isset($_POST['Secodes']))
+		{
+			$model->attributes=$_POST['Secodes'];
+			$model->save()
 		}
 
 		$this->render('create',array(
@@ -92,10 +80,11 @@ class ProductController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Product']))
+		if(isset($_POST['Secodes']))
 		{
-			$model->attributes=$_POST['Product'];
-			$model->save();
+			$model->attributes=$_POST['Secodes'];
+			if($model->save())
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -128,10 +117,10 @@ class ProductController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Product('search');
+		$model=new Secodes('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Product']))
-			$model->attributes=$_GET['Product'];
+		if(isset($_GET['Secodes']))
+			$model->attributes=$_GET['Secodes'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -145,7 +134,7 @@ class ProductController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Product::model()->findByPk($id);
+		$model=Secodes::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -157,112 +146,10 @@ class ProductController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='product-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='secodes-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}
-
-	/**
-	 * Displays tha cart page
-	 * @param integer $pid - product's ID
-	 */
-	public function actionCart($pid = false, $mark = false, $model = false, $modification = false, $modifid = false)
-	{
-		if (Yii::app()->request->isAjaxRequest) { // учитывать AjaxValidation формы
-
-		    $product = Product::getProd($pid);
-
-		    $_SESSION['orders'][$pid] = array(
-		    	'pid' => $pid,
-		    	'mark' => $mark,
-		    	'model' => $model,
-		    	'modification' => $modification,
-		    	'modifid' => $modifid,
-		    	'price' => $product['price']
-		    );
-
-  			Yii::app()->end();
-		}
-
-		$model = new Order;
-
-		$this->render('cart', array(
-			'model' => $model,
-		));
-	}
-
-	/**
-	 * Очистка сессионных данных для корзины
-	 */
-	public function actionClearcart()
-	{
-		unset($_SESSION['orders']);
-		$this->redirect(array('cart'));
-	}
-
-	/**
-	 * Удаление товара из корзины
-	 */
-	public function actionRemoveitem($pid)
-	{
-		if (Yii::app()->request->isAjaxRequest == true) {
-		    unset($_SESSION['orders'][$pid]);
-		    
-		    if (empty($_SESSION['orders'])) {
-				unset($_SESSION['orders']);
-		    }
-		    
-		    Yii::app()->end();
-		}
-	}
-
-	/**
-	 * Добавление заказа в базу
-	 */
-	public function actionAddorder()
-	{
-		$id = Order::getLastId();
-exit(var_dump($_POST));
-		if ($id)
-		{
-			$id = current($id) + 1;
-		}
-		else
-		{
-			$id = 1;
-		}
-
-		foreach ($_POST as $key => $value)
-		{
-			if (substr($key, 0, 3) === 'pid')
-			{
-				$product = Product::getProd($value);
-				$model = new OrderList;
-
-				$model->attributes = array(
-					'order_id' => $id,
-					'product_id' => $value,
-					'product_price' => $product['price'],
-					'modification_id' => $_SESSION['orders'][$value]['modifid'],
-					'mounting' => '0'
-				);
-				$model->save();
-			}
-		}
-
-		Order::createOrder(
-			$id,
-			$_POST['Order']['mounting'],
-			$_POST['Order']['clientname'],
-			$_POST['Order']['phone'],
-			$_POST['Order']['address'],
-			$_POST['Order']['date'],
-			$_POST['Order']['time'],
-			date('d.m.Y H:i:s', time())
-		);
-
-		$this->redirect(array('clearcart'));
 	}
 }

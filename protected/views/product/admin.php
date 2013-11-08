@@ -1,12 +1,13 @@
 <?php
+$this->pageTitle = Yii::app()->name.' - Управление записями продукции';
+
 $this->breadcrumbs=array(
 	'Products'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List Product','url'=>array('index')),
-	array('label'=>'Create Product','url'=>array('create')),
+	array('label'=>'Создать продукцию','url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -23,14 +24,14 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Products</h1>
+<h1>Управление записями</h1>
 
 <p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+Вы можете опционально добавить оператор сравнения (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
+или <b>=</b>) в начало поля для поиска.
 </p>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button btn')); ?>
+<?php echo CHtml::link('Форма поиска','#',array('class'=>'search-button btn')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,
@@ -42,19 +43,21 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
+		//'id',
 		'code',
 		'name',
-		'eurocode',
-		'prodcode',
+		//'eurocode',
+		//'prodcode',
 		'price',
-		/*
 		'brand',
-		'features',
+		//'features',
 		'available',
-		*/
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 		),
 	),
 )); ?>
+
+<script>
+	$('body').addClass('products_manage');
+</script>

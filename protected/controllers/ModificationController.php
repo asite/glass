@@ -6,7 +6,9 @@ class ModificationController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout = '//layouts/column2';
+
+	public $defaultAction = 'admin';
 
 	/**
 	 * @return array action filters
@@ -27,7 +29,7 @@ class ModificationController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index', 'view', 'models'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -45,17 +47,6 @@ class ModificationController extends Controller
 	}
 
 	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
-
-	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
@@ -70,7 +61,7 @@ class ModificationController extends Controller
 		{
 			$model->attributes=$_POST['Modification'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -93,8 +84,7 @@ class ModificationController extends Controller
 		if(isset($_POST['Modification']))
 		{
 			$model->attributes=$_POST['Modification'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->save();
 		}
 
 		$this->render('update',array(
@@ -123,29 +113,28 @@ class ModificationController extends Controller
 	}
 
 	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider = Modification::getModifList();
-
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
-
-	/**
 	 * Manages all models.
 	 */
 	public function actionAdmin()
 	{
-		$model=new Modification('search');
+		$model = new Modification('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Modification']))
-			$model->attributes=$_GET['Modification'];
+		
+		if (isset($_GET['Modification_markname']) && !isset($_GET['Modification']['model_id'])) {
 
-		$this->render('admin',array(
-			'model'=>$model,
+			$this->render('admin', array(
+				'model' => $model,
+				'markId' => $_GET['Modification_markname'],
+			));
+			Yii::app()->end();
+		}
+
+		if (isset($_GET['Modification'])) {
+			$model->attributes = $_GET['Modification'];
+		}
+
+		$this->render('admin', array(
+			'model' => $model,
 		));
 	}
 
@@ -173,5 +162,15 @@ class ModificationController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actionModels($mark)
+	{
+		$model = new Modification;
+
+		$this->renderPartial('_models', array(
+			'model' => $model,
+			'mark' => $mark
+		));
 	}
 }

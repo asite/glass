@@ -63,7 +63,7 @@ foreach ($data as $key => $value) {
 $content .= '</tbody></table></div>
 	<div id="models" data-url="'.Yii::app()->createUrl('mark/models').'"></div>
 	<div id="modifications" data-url="'.Yii::app()->createUrl('mark/modifications').'"></div>
-	<div id="products" data-url="'.Yii::app()->createUrl('mark/products').'"></div>';
+	<div id="products" data-url="'.Yii::app()->createUrl('mark/products').'" data-cart="'.Yii::app()->createUrl('product/cart').'"></div>';
 
 $this->widget('bootstrap.widgets.TbTabs', array(
     'type'=>'tabs',
@@ -82,8 +82,7 @@ $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'cartModal')); ?>
     <?php
     $this->widget('bootstrap.widgets.TbButton', array(
         'label'=>'Оформить заказ',
-        'url'=>'#',
-        'htmlOptions'=>array('data-dismiss'=>'modal'),
+        'url'=>Yii::app()->createUrl('product/cart'),
     ));
     $this->widget('bootstrap.widgets.TbButton', array(
         'label'=>'Оформить позже',

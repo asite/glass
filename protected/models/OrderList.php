@@ -1,20 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "mark".
+ * This is the model class for table "order_list".
  *
- * The followings are the available columns in table 'mark':
+ * The followings are the available columns in table 'order_list':
  * @property string $id
- * @property string $name
+ * @property string $order_id
+ * @property string $product_id
+ * @property string $product_price
+ * @property string $modification_id
+ * @property double $mounting
  */
-class Mark extends CActiveRecord
+class OrderList extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'mark';
+		return 'order_list';
 	}
 
 	/**
@@ -25,11 +29,12 @@ class Mark extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
-			array('name', 'length', 'max'=>256),
+			array('order_id, product_id, product_price, modification_id, mounting', 'required'),
+			array('mounting', 'numerical'),
+			array('order_id, product_id, product_price, modification_id', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('id, order_id, product_id, product_price, modification_id, mounting', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,7 +56,11 @@ class Mark extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Наименование',
+			'order_id' => 'Order',
+			'product_id' => 'Product',
+			'product_price' => 'Product Price',
+			'modification_id' => 'Modification',
+			'mounting' => 'Mounting',
 		);
 	}
 
@@ -74,7 +83,11 @@ class Mark extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('order_id',$this->order_id,true);
+		$criteria->compare('product_id',$this->product_id,true);
+		$criteria->compare('product_price',$this->product_price,true);
+		$criteria->compare('modification_id',$this->modification_id,true);
+		$criteria->compare('mounting',$this->mounting);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -85,15 +98,10 @@ class Mark extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Mark the static model class
+	 * @return OrderList the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
-
-	public function getAllMarks()
-	{
-		return Yii::app()->db->createCommand("SELECT name, pop FROM mark ORDER BY name")->queryAll();
 	}
 }
